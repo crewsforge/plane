@@ -69,6 +69,7 @@ services:
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
       RABBITMQ_VHOST: ${RABBITMQ_VHOST}
+      SECRET_KEY: ${SECRET_KEY}
 
   worker:
     container_name: bgworker
@@ -187,6 +188,9 @@ services:
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
       RABBITMQ_VHOST: ${RABBITMQ_VHOST}
+      LIVE_BASE_URL: ${LIVE_BASE_URL}
+      LIVE_BASE_PATH: ${LIVE_BASE_PATH}
+      LIVE_SERVER_SECRET_KEY: ${LIVE_SERVER_SECRET_KEY}
 
   plane-db:
     container_name: plane-db
