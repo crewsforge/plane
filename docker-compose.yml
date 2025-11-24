@@ -227,6 +227,7 @@ services:
       AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
       USE_MINIO: ${USE_MINIO}
       MINIO_ENDPOINT_SSL: ${MINIO_ENDPOINT_SSL}
+      API_BASE_URL: ${API_BASE_URL}
 
   plane-db:
     container_name: plane-db
