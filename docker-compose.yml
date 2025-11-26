@@ -261,6 +261,7 @@ services:
       SPACE_BASE_URL: ${SPACE_BASE_URL}
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
       APP_DOMAIN: ${APP_DOMAIN}
+      API_BASE_URL: ${API_BASE_URL}
 
   plane-db:
     container_name: plane-db
