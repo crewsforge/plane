@@ -9,6 +9,8 @@ services:
     restart: always
     depends_on:
       - api
+    networks:
+      - plane-net
 
   admin:
     container_name: admin
@@ -21,6 +23,8 @@ services:
     depends_on:
       - api
       - web
+    networks:
+      - plane-net
 
   space:
     container_name: space
@@ -33,6 +37,8 @@ services:
     depends_on:
       - api
       - web
+    networks:
+      - plane-net
 
   api:
     container_name: api
@@ -43,11 +49,42 @@ services:
         DOCKER_BUILDKIT: 1
     restart: always
     command: ./bin/docker-entrypoint-api.sh
-    env_file:
-      - ./apps/api/.env
     depends_on:
       - plane-db
       - plane-redis
+    networks:
+      - plane-net
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+      RABBITMQ_VHOST: ${RABBITMQ_VHOST}
+      SECRET_KEY: ${SECRET_KEY}
+      GUNICORN_WORKERS: ${GUNICORN_WORKERS}
+      AWS_REGION: ${AWS_REGION}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_S3_ENDPOINT_URL: ${AWS_S3_ENDPOINT_URL}
+      AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
+      USE_MINIO: ${USE_MINIO}
+      MINIO_ENDPOINT_SSL: ${MINIO_ENDPOINT_SSL}
+      WEB_URL: ${WEB_URL}
+      APP_BASE_URL: ${APP_BASE_URL}
+      ADMIN_BASE_URL: ${ADMIN_BASE_URL}
+      SPACE_BASE_URL: ${SPACE_BASE_URL}
+      LIVE_BASE_URL: ${LIVE_BASE_URL}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      APP_DOMAIN: ${APP_DOMAIN}
 
   worker:
     container_name: bgworker
@@ -58,12 +95,41 @@ services:
         DOCKER_BUILDKIT: 1
     restart: always
     command: ./bin/docker-entrypoint-worker.sh
-    env_file:
-      - ./apps/api/.env
     depends_on:
       - api
       - plane-db
       - plane-redis
+    networks:
+      - plane-net
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+      RABBITMQ_VHOST: ${RABBITMQ_VHOST}
+      AWS_REGION: ${AWS_REGION}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_S3_ENDPOINT_URL: ${AWS_S3_ENDPOINT_URL}
+      AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
+      USE_MINIO: ${USE_MINIO}
+      MINIO_ENDPOINT_SSL: ${MINIO_ENDPOINT_SSL}
+      WEB_URL: ${WEB_URL}
+      APP_BASE_URL: ${APP_BASE_URL}
+      ADMIN_BASE_URL: ${ADMIN_BASE_URL}
+      SPACE_BASE_URL: ${SPACE_BASE_URL}
+      LIVE_BASE_URL: ${LIVE_BASE_URL}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      APP_DOMAIN: ${APP_DOMAIN}
 
   beat-worker:
     container_name: beatworker
@@ -74,12 +140,41 @@ services:
         DOCKER_BUILDKIT: 1
     restart: always
     command: ./bin/docker-entrypoint-beat.sh
-    env_file:
-      - ./apps/api/.env
     depends_on:
       - api
       - plane-db
       - plane-redis
+    networks:
+      - plane-net
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+      RABBITMQ_VHOST: ${RABBITMQ_VHOST}
+      AWS_REGION: ${AWS_REGION}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_S3_ENDPOINT_URL: ${AWS_S3_ENDPOINT_URL}
+      AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
+      USE_MINIO: ${USE_MINIO}
+      MINIO_ENDPOINT_SSL: ${MINIO_ENDPOINT_SSL}
+      WEB_URL: ${WEB_URL}
+      APP_BASE_URL: ${APP_BASE_URL}
+      ADMIN_BASE_URL: ${ADMIN_BASE_URL}
+      SPACE_BASE_URL: ${SPACE_BASE_URL}
+      LIVE_BASE_URL: ${LIVE_BASE_URL}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      APP_DOMAIN: ${APP_DOMAIN}
 
   migrator:
     container_name: plane-migrator
@@ -90,11 +185,40 @@ services:
         DOCKER_BUILDKIT: 1
     restart: no
     command: ./bin/docker-entrypoint-migrator.sh
-    env_file:
-      - ./apps/api/.env
     depends_on:
       - plane-db
       - plane-redis
+    networks:
+      - plane-net
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+      RABBITMQ_VHOST: ${RABBITMQ_VHOST}
+      AWS_REGION: ${AWS_REGION}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_S3_ENDPOINT_URL: ${AWS_S3_ENDPOINT_URL}
+      AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
+      USE_MINIO: ${USE_MINIO}
+      MINIO_ENDPOINT_SSL: ${MINIO_ENDPOINT_SSL}
+      WEB_URL: ${WEB_URL}
+      APP_BASE_URL: ${APP_BASE_URL}
+      ADMIN_BASE_URL: ${ADMIN_BASE_URL}
+      SPACE_BASE_URL: ${SPACE_BASE_URL}
+      LIVE_BASE_URL: ${LIVE_BASE_URL}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      APP_DOMAIN: ${APP_DOMAIN}
 
   live:
     container_name: plane-live
@@ -104,6 +228,40 @@ services:
       args:
         DOCKER_BUILDKIT: 1
     restart: always
+    networks:
+      - plane-net
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+      RABBITMQ_VHOST: ${RABBITMQ_VHOST}
+      LIVE_BASE_URL: ${LIVE_BASE_URL}
+      LIVE_BASE_PATH: ${LIVE_BASE_PATH}
+      LIVE_SERVER_SECRET_KEY: ${LIVE_SERVER_SECRET_KEY}
+      AWS_REGION: ${AWS_REGION}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_S3_ENDPOINT_URL: ${AWS_S3_ENDPOINT_URL}
+      AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
+      USE_MINIO: ${USE_MINIO}
+      MINIO_ENDPOINT_SSL: ${MINIO_ENDPOINT_SSL}
+      WEB_URL: ${WEB_URL}
+      APP_BASE_URL: ${APP_BASE_URL}
+      ADMIN_BASE_URL: ${ADMIN_BASE_URL}
+      SPACE_BASE_URL: ${SPACE_BASE_URL}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      APP_DOMAIN: ${APP_DOMAIN}
+      API_BASE_URL: ${API_BASE_URL}
 
   plane-db:
     container_name: plane-db
@@ -112,13 +270,13 @@ services:
     command: postgres -c 'max_connections=1000'
     volumes:
       - pgdata:/var/lib/postgresql/data
-    env_file:
-      - .env
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       PGDATA: /var/lib/postgresql/data
+    networks:
+      - plane-net
 
   plane-redis:
     container_name: plane-redis
@@ -126,19 +284,21 @@ services:
     restart: always
     volumes:
       - redisdata:/data
+    networks:
+      - plane-net
 
   plane-mq:
     container_name: plane-mq
     image: rabbitmq:3.13.6-management-alpine
     restart: always
-    env_file:
-      - .env
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
       RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST}
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - plane-net
 
   plane-minio:
     container_name: plane-minio
@@ -150,8 +310,9 @@ services:
     environment:
       MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
       MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - plane-net
 
-  # Comment this if you already have a reverse proxy running
   proxy:
     container_name: proxy
     build:
@@ -159,8 +320,8 @@ services:
       dockerfile: Dockerfile.ce
     restart: always
     ports:
-      - ${LISTEN_HTTP_PORT}:85
-      - ${LISTEN_HTTPS_PORT}:448
+      - "85:80"
+      - "448:443"
     environment:
       FILE_SIZE_LIMIT: ${FILE_SIZE_LIMIT:-5242880}
       BUCKET_NAME: ${AWS_S3_BUCKET_NAME:-uploads}
@@ -169,9 +330,15 @@ services:
       - api
       - space
       - admin
+    networks:
+      - plane-net
 
 volumes:
   pgdata:
   redisdata:
   uploads:
   rabbitmq_data:
+
+networks:
+  plane-net:
+    driver: bridge
